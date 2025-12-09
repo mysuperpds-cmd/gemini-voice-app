@@ -10,9 +10,6 @@ import ServicesList from './components/ServicesList.tsx';
 import BookingsView from './components/BookingsView.tsx';
 import ChatInterface from './components/ChatInterface.tsx';
 import Visualizer from './components/Visualizer.tsx';
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
-
 
 // --- Function Declarations for Gemini ---
 const getServicesDeclaration: FunctionDeclaration = {
@@ -548,3 +545,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+                
