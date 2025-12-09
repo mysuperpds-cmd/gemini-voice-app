@@ -11,7 +11,7 @@ import BookingsView from './components/BookingsView.tsx';
 import ChatInterface from './components/ChatInterface.tsx';
 import Visualizer from './components/Visualizer.tsx';
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-if (!API_KEY) {
+
   throw new Error("API_KEY not found in environment.");
 }
 
