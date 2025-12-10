@@ -45,7 +45,7 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [volume, setVolume] = useState(0);
-
+const [micHelp, setMicHelp] = useState<string | null>(null);
   // --- Refs for Audio & API ---
   const sessionRef = useRef<any>(null); // To store the Active Session
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -137,18 +137,31 @@ const App: React.FC = () => {
       await inputCtx.resume();
       inputContextRef.current = inputCtx;
       
-      // Get Microphone Stream
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: {
-        sampleRate: 16000,
-        channelCount: 1,
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      }});
-      streamRef.current = stream;
+    // Get Microphone Stream
+try {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    audio: {
+      sampleRate: 16000,
+      channelCount: 1,
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+    },
+  });
 
-      // --- Connect to Live API ---
-      const sessionPromise = ai.live.connect({
+  streamRef.current = stream;
+} catch (err) {
+  console.error("Mic permission error:", err);
+  setError(
+    "To talk to Aleeza, please allow microphone access in your browser settings and close any floating bubbles (WhatsApp, Messenger, screen recorder), then reload the page."
+  );
+  return; // ⬅️ stop here if we don't have a mic
+}
+
+// --- Connect to Live API ---
+const sessionPromise = ai.live.connect({
+  // (keep your existing config here)
+});
         model: 'gemini-2.5-flash-native-audio-preview-09-2025',
         config: {
           responseModalities: [Modality.AUDIO],
