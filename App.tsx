@@ -45,7 +45,7 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [volume, setVolume] = useState(0);
-const [micHelp, setMicHelp] = useState<string | null>(null);
+
   // --- Refs for Audio & API ---
   const sessionRef = useRef<any>(null); // To store the Active Session
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -137,8 +137,7 @@ const [micHelp, setMicHelp] = useState<string | null>(null);
       await inputCtx.resume();
       inputContextRef.current = inputCtx;
       
-   
-// Get Microphone Stream
+      // Get Microphone Stream
       const stream = await navigator.mediaDevices.getUserMedia({ audio: {
         sampleRate: 16000,
         channelCount: 1,
@@ -150,18 +149,6 @@ const [micHelp, setMicHelp] = useState<string | null>(null);
 
       // --- Connect to Live API ---
       const sessionPromise = ai.live.connect({
-  model: 'gemini-2.5-flash-native-audio-preview-09-2025',
-  config: {
-    // ...
-    responseModalities: [Modality.AUDIO],
-    systemInstruction: SYSTEM_INSTRUCTION,
-  },
-});
-
-// --- Connect to Live API ---
-const sessionPromise = ai.live.connect({
-  // (keep your existing config here)
-});
         model: 'gemini-2.5-flash-native-audio-preview-09-2025',
         config: {
           responseModalities: [Modality.AUDIO],
@@ -558,4 +545,3 @@ const sessionPromise = ai.live.connect({
 };
 
 export default App;
-                
