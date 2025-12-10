@@ -138,20 +138,18 @@ const [micHelp, setMicHelp] = useState<string | null>(null);
       inputContextRef.current = inputCtx;
       
    
-    // Get Microphone Stream
-const stream = await navigator.mediaDevices.getUserMedia({
-  audio: {
-    sampleRate: 16000,
-    channelCount: 1,
-    echoCancellation: true,
-    noiseSuppression: true,
-    autoGainControl: true
-  }
-});
-streamRef.current = stream;
+// Get Microphone Stream
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: {
+        sampleRate: 16000,
+        channelCount: 1,
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }});
+      streamRef.current = stream;
 
-// --- Connect to Live API ---
-const sessionPromise = ai.live.connect({
+      // --- Connect to Live API ---
+      const sessionPromise = ai.live.connect({
   model: 'gemini-2.5-flash-native-audio-preview-09-2025',
   config: {
     // ...
