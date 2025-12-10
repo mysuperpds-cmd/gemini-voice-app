@@ -137,26 +137,28 @@ const [micHelp, setMicHelp] = useState<string | null>(null);
       await inputCtx.resume();
       inputContextRef.current = inputCtx;
       
+   
     // Get Microphone Stream
-try {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    audio: {
-      sampleRate: 16000,
-      channelCount: 1,
-      echoCancellation: true,
-      noiseSuppression: true,
-      autoGainControl: true,
-    },
-  });
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: {
+    sampleRate: 16000,
+    channelCount: 1,
+    echoCancellation: true,
+    noiseSuppression: true,
+    autoGainControl: true
+  }
+});
+streamRef.current = stream;
 
-  streamRef.current = stream;
-} catch (err) {
-  console.error("Mic permission error:", err);
-  setError(
-    "To talk to Aleeza, please allow microphone access in your browser settings and close any floating bubbles (WhatsApp, Messenger, screen recorder), then reload the page."
-  );
-  return; // ⬅️ stop here if we don't have a mic
-}
+// --- Connect to Live API ---
+const sessionPromise = ai.live.connect({
+  model: 'gemini-2.5-flash-native-audio-preview-09-2025',
+  config: {
+    // ...
+    responseModalities: [Modality.AUDIO],
+    systemInstruction: SYSTEM_INSTRUCTION,
+  },
+});
 
 // --- Connect to Live API ---
 const sessionPromise = ai.live.connect({
